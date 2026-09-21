@@ -1,23 +1,65 @@
+---
+import "../styles/global.css";
+import { title, description } from "../constants";
+---
+
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+  </head>
+  <body class="px-4 max-w-xl mx-auto">
+    <nav class="py-6">
+      <svg
+        viewBox="0 0 96 48"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        font-size="16px"
+        width="96"
+        height="48"
+        style="height: 14px; width: 28px; overflow: clip; flex-shrink: 0"
+      >
+        <circle
+          cx="24"
+          cy="24"
+          r="24"
+          font-size="16px"
+          fill="#f7cc05"
+          style="box-sizing: border-box; transform-origin: 0px 0px"
+        />
+        <circle
+          cx="48"
+          cy="24"
+          r="24"
+          font-size="16px"
+          fill="#ee182d"
+          style="box-sizing: border-box; transform-origin: 0px 0px"
+        />
+        <circle
+          cx="72"
+          cy="24"
+          r="24"
+          font-size="16px"
+          fill="#1c4b9c"
+          style="box-sizing: border-box; transform-origin: 0px 0px"
+        />
+      </svg>
+    </nav>
+    <header class="my-14">
+      <h1 class="text-xl font-semibold title">{title}</h1>
+      <p class="text-neutral-600 font-[460] text-[15px] text-pretty">
+        {description}
+      </p>
+    </header>
+    <main>
+      <h2 class="font-semibold title mb-4">The Collection</h2>
+      <slot />
+    </main>
+  </body>
 </html>
-
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>

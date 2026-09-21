@@ -1,0 +1,17 @@
+@import "tailwindcss";
+@import "@fontsource/instrument-serif";
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/host-grotesk";
+@import "@fontsource-variable/geist-mono";
+
+body {
+  font-family: "Inter Variable", sans-serif;
+}
+
+.title {
+  font-family: "Host Grotesk Variable", sans-serif;
+}
+
+.num {
+  font-family: "Geist Mono Variable", monospace;
+}
