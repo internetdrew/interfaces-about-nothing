@@ -1,4 +1,5 @@
 ---
+import { ChineseRestaurantExperience } from "../components/chinese-restraurant/ChineseRestaurantExperience";
 import ProjectWrapper from "../components/ProjectWrapper.astro";
 import Layout from "../layouts/Layout.astro";
 
@@ -7,7 +8,11 @@ import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout>
-  <ProjectWrapper name="The Name" description="something about this thing">
-    hello there
+  <ProjectWrapper
+    position={1}
+    name="The Chinese Restaurant Waitlist"
+    description="In “The Chinese Restaurant,” Jerry, George, and Elaine wait for a table while trying to make it to a movie. This Dynamic Island-inspired waitlist lets you check in, track the queue, and respond when your name—or something close to it—is called."
+  >
+    <ChineseRestaurantExperience />
   </ProjectWrapper>
 </Layout>

@@ -2,18 +2,21 @@
 interface Props {
   name: string;
   description: string;
+  position: number;
 }
 
-const { name, description } = Astro.props;
+const { name, description, position } = Astro.props;
 ---
 
-<section>
-  <div class="flex items-center gap-1 mt-4">
-    <span class="font-mono font-medium text-xs text-neutral-600 num">01</span>
-    <h2 class="font-medium">{name}</h2>
-  </div>
-  <p class="text-neutral-600 text-sm">{description}</p>
+<li>
   <div class="my-8">
     <slot />
   </div>
-</section>
+  <div class="flex items-center gap-1 mt-4">
+    <span class="font-mono font-medium text-xs text-neutral-600 num">
+      {String(position).padStart(2, "0")}
+    </span>
+    <h2 class="font-medium text-sm">{name}</h2>
+  </div>
+  <p class="text-neutral-600 mt-1 text-xs">{description}</p>
+</li>
