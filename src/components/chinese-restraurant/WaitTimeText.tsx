@@ -27,7 +27,7 @@ export default function WaitTimeText({
           <motion.span
             key={text}
             aria-hidden="true"
-            className="inline-block whitespace-nowrap"
+            className="inline-block text-[13px] whitespace-nowrap"
             initial={{ y: 4, filter: "blur(2px)", opacity: 0 }}
             animate={{ y: 0, filter: "blur(0px)", opacity: 1 }}
             exit={{ y: -4, filter: "blur(2px)", opacity: 0 }}

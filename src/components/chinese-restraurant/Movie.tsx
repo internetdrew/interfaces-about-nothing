@@ -30,7 +30,7 @@ export default function Movie({ onBack, onLeaveQueue }: MovieProps) {
         <button
           type="button"
           onClick={onBack}
-          className="rounded-xl bg-neutral-800 px-4 py-2.5 text-sm font-medium focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+          className="rounded-xl bg-neutral-800 px-4 py-2 text-[13px] font-medium focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
         >
           Back
         </button>

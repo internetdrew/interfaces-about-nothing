@@ -77,7 +77,7 @@ export default function Queue({
         <button
           type="button"
           onClick={onCheckTiming}
-          className="shrink-0 rounded-xl bg-white px-4 py-2 text-sm font-medium text-neutral-950 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+          className="shrink-0 rounded-xl bg-white px-4 py-2 text-[13px] font-medium text-neutral-950 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
         >
           Check timing
         </button>

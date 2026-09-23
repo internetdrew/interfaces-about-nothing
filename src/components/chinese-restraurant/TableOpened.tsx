@@ -1,10 +1,28 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
-export default function TableOpened({ onRejoin }: { onRejoin: () => void }) {
+type TableOpenedProps = {
+  onRejoin: () => void;
+  onExpire: () => void;
+};
+
+export default function TableOpened({ onRejoin, onExpire }: TableOpenedProps) {
   const heading = useRef<HTMLHeadingElement>(null);
+  const [secondsLeft, setSecondsLeft] = useState(5);
+
   useEffect(() => {
     heading.current?.focus({ preventScroll: true });
   }, []);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setSecondsLeft((seconds) => Math.max(0, seconds - 1));
+    }, 1000);
+    return () => window.clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    if (secondsLeft === 0) onExpire();
+  }, [onExpire, secondsLeft]);
 
   return (
     <div className="flex min-h-44 w-88 flex-col items-center px-4 pt-5 pb-4 text-center text-white">
@@ -36,9 +54,17 @@ export default function TableOpened({ onRejoin }: { onRejoin: () => void }) {
       <button
         type="button"
         onClick={onRejoin}
-        className="mt-6 min-h-11 w-full rounded-xl bg-white px-4 py-2.5 text-sm font-medium text-neutral-950 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+        className="mt-6 min-h-11 w-full rounded-xl bg-white px-4 py-2 text-sm font-medium text-neutral-950 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
       >
-        Rejoin waitlist
+        <span>Rejoin waitlist · </span>
+        <span
+          key={secondsLeft}
+          className="t-digit-group is-animating tabular-nums"
+          aria-live="polite"
+          aria-label={`${secondsLeft} seconds`}
+        >
+          <span className="t-digit">{secondsLeft}</span>
+        </span>
       </button>
     </div>
   );

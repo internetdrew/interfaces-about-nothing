@@ -147,7 +147,10 @@ export const ChineseRestaurantExperience = () => {
         whileTap={{
           scale: isCompact && view !== "left" && !reducedMotion ? 0.95 : 1,
         }}
-        style={{ borderRadius: isCompact ? 18 : 28, minWidth: 96 }}
+        style={{
+          borderRadius: isCompact ? 18 : 28,
+          minWidth: 96,
+        }}
         transition={viewTransition}
         className="relative h-fit overflow-hidden bg-black"
       >
@@ -226,6 +229,12 @@ export const ChineseRestaurantExperience = () => {
                     ]);
                     setWaitEstimate("5–10 minutes");
                     setView("waiting");
+                  }}
+                  onExpire={() => {
+                    setQueue((parties) =>
+                      parties.filter((party) => !party.isUser),
+                    );
+                    setView("idle");
                   }}
                 />
               ) : (
