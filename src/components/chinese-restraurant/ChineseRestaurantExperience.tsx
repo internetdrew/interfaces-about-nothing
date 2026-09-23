@@ -22,16 +22,35 @@ const reducedTransition = { layout: { duration: 0 } } satisfies Transition;
 export const ChineseRestaurantExperience = () => {
   const [view, setView] = useState<RestaurantView>("idle");
   const [isJoining, setIsJoining] = useState(false);
-  const [hasRejoined, setHasRejoined] = useState(false);
   const leftConfirmation = useRef<HTMLParagraphElement>(null);
-  const [queueOpenedAt, setQueueOpenedAt] = useState<number | null>(null);
+  const cohenTimer = useRef<number | null>(null);
   const [queue, setQueue] = useState<QueueParty[]>([]);
+  const [waitEstimate, setWaitEstimate] = useState("~20 mins");
+  const islandRef = useRef<HTMLDivElement>(null);
   const [{ partySize, direction }, setParty] = useState({
     partySize: 4,
     direction: 1,
   });
   const reducedMotion = useReducedMotion();
   const isCompact = view === "idle" || view === "waiting" || view === "left";
+  const hasActiveWaitlist = queue.some((party) => party.isUser);
+
+  useEffect(() => {
+    const handleOutsidePointer = (event: PointerEvent) => {
+      if (
+        view === "idle" ||
+        islandRef.current?.contains(event.target as Node)
+      ) {
+        return;
+      }
+      setIsJoining(false);
+      setView(hasActiveWaitlist ? "waiting" : "idle");
+    };
+
+    document.addEventListener("pointerdown", handleOutsidePointer);
+    return () =>
+      document.removeEventListener("pointerdown", handleOutsidePointer);
+  }, [hasActiveWaitlist, view]);
 
   const viewTransition = reducedMotion
     ? reducedTransition
@@ -46,45 +65,31 @@ export const ChineseRestaurantExperience = () => {
   useEffect(() => {
     if (!isJoining) return;
     const timer = window.setTimeout(() => {
+      setWaitEstimate(
+        partySize > 8 ? "30+ mins" : partySize > 2 ? "~20 mins" : "~10 mins",
+      );
       setQueue([
         { id: "murphy", name: "Murphy", size: 4, status: "Seating now" },
         { id: "dennison", name: "Dennison", size: 2, status: "Waiting" },
         { id: "user", name: "Cartwright", size: partySize, isUser: true },
       ]);
-      setQueueOpenedAt(null);
       setView("waiting");
       setIsJoining(false);
     }, 800);
     return () => window.clearTimeout(timer);
   }, [isJoining, partySize]);
 
-  // Start once on the first queue opening; closing or reopening won't reset it.
-  useEffect(() => {
-    if (queueOpenedAt === null) return;
-    const timer = window.setTimeout(
-      () => {
-        setQueue((parties) => {
-          if (parties.some((party) => party.id === "walk-in")) return parties;
-          const murphyIndex = parties.findIndex(
-            (party) => party.id === "murphy",
-          );
-          if (murphyIndex < 0) return parties;
-          const insertIndex = murphyIndex + 1;
-          return [
-            ...parties.slice(0, insertIndex),
-            { id: "walk-in", name: "Cohen", size: 1, status: "Next" },
-            ...parties.slice(insertIndex),
-          ];
-        });
-      },
-      Math.max(0, queueOpenedAt + 3_000 - Date.now()),
-    );
-    return () => window.clearTimeout(timer);
-  }, [queueOpenedAt]);
+  useEffect(
+    () => () => {
+      if (cohenTimer.current !== null) window.clearTimeout(cohenTimer.current);
+    },
+    [],
+  );
 
   useEffect(() => {
     if (view !== "left") return;
     leftConfirmation.current?.focus({ preventScroll: true });
+
     // Let the contraction finish, then leave a quiet beat before the news.
     const timer = window.setTimeout(() => setView("table-opened"), 3_300);
     return () => window.clearTimeout(timer);
@@ -103,17 +108,41 @@ export const ChineseRestaurantExperience = () => {
         : { partySize, direction: delta };
     });
   }, []);
-  const estimatedWait = hasRejoined
-    ? "5–10 minutes"
-    : partySize > 8
-      ? "30+ mins"
-      : partySize > 2
-        ? "~20 mins"
-        : "~10 mins";
+  const estimatedWait =
+    view === "check-in"
+      ? partySize > 8
+        ? "30+ mins"
+        : partySize > 2
+          ? "~20 mins"
+          : "~10 mins"
+      : waitEstimate;
+
+  const openQueue = useCallback(() => {
+    setView("queue");
+    if (
+      cohenTimer.current !== null ||
+      queue.some((party) => party.id === "walk-in")
+    )
+      return;
+    cohenTimer.current = window.setTimeout(() => {
+      setQueue((parties) => {
+        const murphyIndex = parties.findIndex((party) => party.id === "murphy");
+        if (murphyIndex < 0 || parties.some((party) => party.id === "walk-in"))
+          return parties;
+        return [
+          ...parties.slice(0, murphyIndex + 1),
+          { id: "walk-in", name: "Cohen", size: 1, status: "Next" },
+          ...parties.slice(murphyIndex + 1),
+        ];
+      });
+      cohenTimer.current = null;
+    }, 3_000);
+  }, [queue]);
 
   return (
     <div className="flex h-96 justify-center">
       <motion.div
+        ref={islandRef}
         layout
         whileTap={{
           scale: isCompact && view !== "left" && !reducedMotion ? 0.95 : 1,
@@ -129,12 +158,10 @@ export const ChineseRestaurantExperience = () => {
             aheadCount={aheadCount}
             viewTransition={viewTransition}
             reducedMotion={reducedMotion}
-            onCheckIn={() => setView("check-in")}
-            onOpenQueue={() => {
-              if (!hasRejoined)
-                setQueueOpenedAt((openedAt) => openedAt ?? Date.now());
-              setView("queue");
-            }}
+            onCheckIn={() =>
+              setView(hasActiveWaitlist ? "waiting" : "check-in")
+            }
+            onOpenQueue={openQueue}
           />
         )}
         {/* Pop details out of flow so their fade doesn't delay the collapse. */}
@@ -145,25 +172,29 @@ export const ChineseRestaurantExperience = () => {
               ref={leftConfirmation}
               tabIndex={-1}
               layout="position"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: reducedMotion ? 0 : 0.12 }}
+              initial={{ opacity: 0, filter: "blur(4px)" }}
+              animate={{ opacity: 1, filter: "blur(0px)" }}
+              exit={{ opacity: 0, filter: "blur(4px)" }}
+              transition={{
+                duration: reducedMotion ? 0 : 0.2,
+                ease: "easeOut",
+              }}
               className="flex h-9 w-56 items-center justify-center px-4 text-xs text-white outline-none"
             >
-              You’ve left the waitlist.
+              You've left the waitlist.
             </motion.p>
           )}
           {!isCompact && (
             <motion.div
               key={view}
               layout="position"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0, pointerEvents: "none" }}
+              initial={{ opacity: 0, filter: "blur(4px)" }}
+              animate={{ opacity: 1, filter: "blur(0px)" }}
+              exit={{ opacity: 0, filter: "blur(4px)", pointerEvents: "none" }}
               transition={{
                 ...viewTransition,
                 opacity: { duration: reducedMotion ? 0 : 0.12 },
+                filter: { duration: reducedMotion ? 0 : 0.2, ease: "easeOut" },
               }}
             >
               {view === "check-in" ? (
@@ -193,7 +224,7 @@ export const ChineseRestaurantExperience = () => {
                         isUser: true,
                       },
                     ]);
-                    setHasRejoined(true);
+                    setWaitEstimate("5–10 minutes");
                     setView("waiting");
                   }}
                 />
@@ -201,7 +232,10 @@ export const ChineseRestaurantExperience = () => {
                 <Movie
                   onBack={() => setView("queue")}
                   onLeaveQueue={() => {
-                    setQueueOpenedAt(null);
+                    if (cohenTimer.current !== null) {
+                      window.clearTimeout(cohenTimer.current);
+                      cohenTimer.current = null;
+                    }
                     setQueue((parties) =>
                       parties.filter((party) => !party.isUser),
                     );
