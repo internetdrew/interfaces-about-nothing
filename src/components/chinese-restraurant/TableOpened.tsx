@@ -1,0 +1,45 @@
+import { useEffect, useRef } from "react";
+
+export default function TableOpened({ onRejoin }: { onRejoin: () => void }) {
+  const heading = useRef<HTMLHeadingElement>(null);
+  useEffect(() => {
+    heading.current?.focus({ preventScroll: true });
+  }, []);
+
+  return (
+    <div className="flex min-h-44 w-88 flex-col items-center px-4 pt-5 pb-4 text-center text-white">
+      <div
+        className="mb-2 grid size-11 place-items-center rounded-full bg-[#071d0d] text-[#22d65c]"
+        aria-hidden="true"
+      >
+        <svg
+          width="22"
+          height="22"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M5 3v6a3 3 0 0 0 6 0V3M8 3v18M19 3c-3 0-4 4-4 7v3h4M19 3v18" />
+        </svg>
+      </div>
+      <h2
+        ref={heading}
+        tabIndex={-1}
+        className="text-2xl font-medium tracking-tight outline-none"
+      >
+        A table just opened.
+      </h2>
+      <p className="mt-1 text-sm text-neutral-400">It would’ve been yours.</p>
+      <button
+        type="button"
+        onClick={onRejoin}
+        className="mt-6 min-h-11 w-full rounded-xl bg-white px-4 py-2.5 text-sm font-medium text-neutral-950 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+      >
+        Rejoin waitlist
+      </button>
+    </div>
+  );
+}
