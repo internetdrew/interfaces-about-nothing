@@ -1,38 +1,39 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { motion, useReducedMotion, type Transition } from "motion/react";
-import Idle from "./Idle";
-import Waiting from "./Waiting";
-import Queue from "./Queue";
+import { useCallback, useEffect, useState } from "react";
+import {
+  AnimatePresence,
+  motion,
+  useReducedMotion,
+  type Transition,
+} from "motion/react";
 import CheckIn from "./CheckIn";
+import RestaurantHeader, { type RestaurantView } from "./RestaurantHeader";
 
-type View = "idle" | "check-in" | "waiting" | "queue";
-
-const layoutTransition = {
+const expandedTransition = {
   layout: { type: "spring", visualDuration: 0.3, bounce: 0.35 },
 } satisfies Transition;
-
-const reducedLayoutTransition = {
-  layout: { duration: 0 },
+const compactTransition = {
+  layout: { type: "spring", visualDuration: 0.28, bounce: 0.1 },
 } satisfies Transition;
+const reducedTransition = { layout: { duration: 0 } } satisfies Transition;
 
 export const ChineseRestaurantExperience = () => {
-  const [view, setView] = useState<View>("idle");
+  const [view, setView] = useState<RestaurantView>("idle");
   const [isJoining, setIsJoining] = useState(false);
-  const [waitingSettled, setWaitingSettled] = useState(false);
   const [{ partySize, direction }, setParty] = useState({
     partySize: 2,
     direction: 1,
   });
   const reducedMotion = useReducedMotion();
   const isCompact = view === "idle" || view === "waiting";
+  const isCheckIn = view === "check-in";
   const viewTransition = reducedMotion
-    ? reducedLayoutTransition
-    : layoutTransition;
+    ? reducedTransition
+    : isCompact
+      ? compactTransition
+      : expandedTransition;
 
   const joinWaitlist = useCallback(() => {
-    if (isJoining) return;
-    setWaitingSettled(false);
-    setIsJoining(true);
+    if (!isJoining) setIsJoining(true);
   }, [isJoining]);
 
   useEffect(() => {
@@ -52,73 +53,53 @@ export const ChineseRestaurantExperience = () => {
         : { partySize, direction: delta };
     });
   }, []);
-
   const estimatedWait =
     partySize > 8 ? "30+ mins" : partySize > 2 ? "~20 mins" : "~10 mins";
-
-  const content = useMemo(() => {
-    switch (view) {
-      case "check-in":
-        return (
-          <CheckIn
-            viewTransition={viewTransition}
-            estimatedWait={estimatedWait}
-            isJoining={isJoining}
-            partySize={partySize}
-            direction={direction}
-            changePartySize={changePartySize}
-            joinWaitlist={joinWaitlist}
-          />
-        );
-      case "idle":
-        return (
-          <Idle
-            onCheckIn={() => setView("check-in")}
-            layoutTransition={viewTransition}
-          />
-        );
-      case "waiting":
-        return (
-          <Waiting
-            showAhead={waitingSettled || !!reducedMotion}
-            estimatedWait={estimatedWait}
-            layoutTransition={viewTransition}
-            onOpenQueue={() => setView("queue")}
-          />
-        );
-      case "queue":
-        return <Queue />;
-    }
-  }, [
-    view,
-    partySize,
-    estimatedWait,
-    direction,
-    reducedMotion,
-    changePartySize,
-    isJoining,
-    joinWaitlist,
-    viewTransition,
-    waitingSettled,
-  ]);
+  const fadeDuration = reducedMotion ? 0 : 0.12;
 
   return (
     <div className="flex h-72 justify-center">
       <motion.div
         layout
-        whileTap={{ scale: isCompact && !reducedMotion ? 0.95 : 1 }}
         layoutDependency={view}
-        onLayoutAnimationComplete={() => {
-          if (view === "waiting") setWaitingSettled(true);
-        }}
-        style={{
-          borderRadius: isCompact ? 9999 : 18,
-          minWidth: 96,
-        }}
+        whileTap={{ scale: isCompact && !reducedMotion ? 0.95 : 1 }}
+        style={{ borderRadius: isCompact ? 18 : 28, minWidth: 96 }}
         transition={viewTransition}
-        className="h-fit overflow-hidden bg-black"
+        className="relative h-fit overflow-hidden bg-black"
       >
-        {content}
+        <RestaurantHeader
+          view={view}
+          estimatedWait={estimatedWait}
+          viewTransition={viewTransition}
+          reducedMotion={reducedMotion}
+          onCheckIn={() => setView("check-in")}
+          onOpenQueue={() => setView("queue")}
+        />
+        {/* Pop the form out of flow so its fade doesn't delay the collapse. */}
+        <AnimatePresence initial={false} mode="popLayout">
+          {isCheckIn && (
+            <motion.div
+              key="details"
+              layout="position"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0, pointerEvents: "none" }}
+              transition={{
+                ...viewTransition,
+                opacity: { duration: fadeDuration },
+              }}
+            >
+              <CheckIn
+                estimatedWait={estimatedWait}
+                isJoining={isJoining}
+                partySize={partySize}
+                direction={direction}
+                changePartySize={changePartySize}
+                joinWaitlist={joinWaitlist}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.div>
     </div>
   );
