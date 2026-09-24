@@ -1,4 +1,5 @@
 ---
+import { ChineseRestaurantExperience } from "../components/chinese-restraurant/ChineseRestaurantExperience";
 import ProjectWrapper from "../components/ProjectWrapper.astro";
 import Layout from "../layouts/Layout.astro";
 
@@ -7,7 +8,12 @@ import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout>
-  <ProjectWrapper name="The Name" description="something about this thing">
-    hello there
+  <ProjectWrapper
+    name="The Waitlist"
+    episodeName="The Chinese Restaurant"
+    season={2}
+    episode={11}
+  >
+    <ChineseRestaurantExperience client:visible />
   </ProjectWrapper>
 </Layout>
