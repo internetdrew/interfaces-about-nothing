@@ -80,7 +80,7 @@ export default function HoldToLeaveButton({
         }
       }}
       onContextMenu={(event) => event.preventDefault()}
-      className="relative min-h-11 flex-1 touch-pan-y overflow-hidden rounded-xl bg-[#ff453a] px-4 py-2 text-sm text-[13px] font-medium select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+      className="relative h-10 flex-1 touch-pan-y overflow-hidden rounded-xl bg-[#ff453a] px-4 py-2 text-[13px] font-medium select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
     >
       <span className={`t-text-swap ${labelPhase}`}>{label}</span>
       <motion.span

@@ -28,7 +28,7 @@ export const ChineseRestaurantExperience = () => {
   const [waitEstimate, setWaitEstimate] = useState("~20 mins");
   const islandRef = useRef<HTMLDivElement>(null);
   const [{ partySize, direction }, setParty] = useState({
-    partySize: 4,
+    partySize: 2,
     direction: 1,
   });
   const reducedMotion = useReducedMotion();
@@ -73,7 +73,7 @@ export const ChineseRestaurantExperience = () => {
         { id: "dennison", name: "Dennison", size: 2, status: "Waiting" },
         { id: "user", name: "Cartwright", size: partySize, isUser: true },
       ]);
-      setView("waiting");
+      setView("queue");
       setIsJoining(false);
     }, 800);
     return () => window.clearTimeout(timer);
@@ -119,7 +119,11 @@ export const ChineseRestaurantExperience = () => {
 
   const openQueue = useCallback(() => {
     setView("queue");
+  }, []);
+
+  useEffect(() => {
     if (
+      view !== "queue" ||
       cohenTimer.current !== null ||
       queue.some((party) => party.id === "walk-in")
     )
@@ -137,7 +141,7 @@ export const ChineseRestaurantExperience = () => {
       });
       cohenTimer.current = null;
     }, 3_000);
-  }, [queue]);
+  }, [queue, view]);
 
   return (
     <div className="flex h-96 justify-center">
@@ -182,7 +186,7 @@ export const ChineseRestaurantExperience = () => {
                 duration: reducedMotion ? 0 : 0.2,
                 ease: "easeOut",
               }}
-              className="flex h-9 w-56 items-center justify-center px-4 text-xs text-white outline-none"
+              className="flex h-9 w-56 items-center justify-center px-4 text-xs font-medium text-white outline-none"
             >
               You've left the waitlist.
             </motion.p>
@@ -228,7 +232,7 @@ export const ChineseRestaurantExperience = () => {
                       },
                     ]);
                     setWaitEstimate("5–10 minutes");
-                    setView("waiting");
+                    setView("queue");
                   }}
                   onExpire={() => {
                     setQueue((parties) =>

@@ -40,7 +40,7 @@ export default function RestaurantHeader({
       layout
       transition={viewTransition}
       style={{
-        width: isCompact ? (isWaiting ? 208 : 152) : 352,
+        width: isCompact ? (isWaiting ? 172 : 152) : 352,
         height: isCompact ? 36 : 64,
       }}
       className="relative flex items-center"
@@ -130,7 +130,7 @@ export default function RestaurantHeader({
                 delay: reducedMotion ? 0 : 0.2,
               },
             }}
-            className="ml-2 text-[10px] whitespace-nowrap text-white"
+            className="ml-2 text-[13px] whitespace-nowrap text-white"
           >
             {aheadCount} ahead
           </motion.span>

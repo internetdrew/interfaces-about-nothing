@@ -14,7 +14,7 @@ import { title, description } from "../constants";
     <title>{title}</title>
     <meta name="description" content={description} />
   </head>
-  <body class="px-4 max-w-xl mx-auto">
+  <body class="px-4 max-w-xl mx-auto bg-stone-300">
     <nav class="py-6">
       <svg
         viewBox="0 0 96 48"
@@ -53,12 +53,22 @@ import { title, description } from "../constants";
     </nav>
     <header class="my-14">
       <h1 class="text-xl font-semibold title">{title}</h1>
-      <p class="text-neutral-600 font-[460] text-[15px] text-pretty">
+      <p class="text-stone-600 font-[460] text-[15px] text-pretty">
         {description}
       </p>
     </header>
-    <main class="mt-16">
+    <main class="root my-16">
       <slot />
     </main>
   </body>
 </html>
+
+<style>
+  .root {
+    isolation: isolate;
+  }
+
+  body {
+    position: relative;
+  }
+</style>

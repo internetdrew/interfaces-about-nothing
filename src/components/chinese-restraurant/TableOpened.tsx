@@ -46,15 +46,15 @@ export default function TableOpened({ onRejoin, onExpire }: TableOpenedProps) {
       <h2
         ref={heading}
         tabIndex={-1}
-        className="text-2xl font-medium tracking-tight outline-none"
+        className="text-xl font-medium tracking-tight outline-none"
       >
         A table just opened.
       </h2>
-      <p className="mt-1 text-sm text-neutral-400">It would’ve been yours.</p>
+      <p className="mt-1 text-sm text-neutral-400">It would've been yours.</p>
       <button
         type="button"
         onClick={onRejoin}
-        className="mt-6 min-h-11 w-full rounded-xl bg-white px-4 py-2 text-sm font-medium text-neutral-950 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+        className="mt-6 h-10 w-full rounded-xl bg-white px-4 py-2 text-[13px] font-medium text-neutral-950 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
       >
         <span>Rejoin waitlist · </span>
         <span
