@@ -3,6 +3,7 @@
 @import "@fontsource-variable/inter";
 @import "@fontsource-variable/host-grotesk";
 @import "@fontsource-variable/geist-mono";
+@import "@fontsource-variable/caveat";
 
 body {
   font-family: "Inter Variable", sans-serif;
@@ -87,4 +88,10 @@ body {
 
 .title {
   font-family: "Host Grotesk Variable", sans-serif;
+}
+
+.sig {
+  font-family: "Caveat Variable", cursive;
+  font-weight: 400;
+  font-style: normal;
 }

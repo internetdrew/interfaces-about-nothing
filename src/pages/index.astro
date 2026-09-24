@@ -14,6 +14,26 @@ import Layout from "../layouts/Layout.astro";
     season={2}
     episode={11}
   >
+    <Fragment slot="note">
+      <p>
+        In <em>The Chinese Restaurant</em>, Jerry, Elaine, and George stop for
+        dinner before a movie. They're told the wait will be “five, ten
+        minutes.”
+      </p>
+      <p>
+        What follows is a string of missed signals, parties seated ahead of
+        them, and a mangled name.
+      </p>
+      <p>
+        In the end, their table becomes ready, but not before they leave the
+        restaurant in frustration.
+      </p>
+      <p>
+        This interactive waitlist brings some of that absurdity into an
+        interface inspired by Apple's Dynamic Island.
+      </p>
+      <p>I hope you enjoy playing with it.</p>
+    </Fragment>
     <ChineseRestaurantExperience client:visible />
   </ProjectWrapper>
 </Layout>

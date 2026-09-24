@@ -1,5 +1,5 @@
 ---
-import { Button } from "@base-ui/react/button";
+import { ProjectNoteDialog } from "./ProjectNoteDialog";
 interface Props {
   name: string;
   episodeName: string;
@@ -12,28 +12,15 @@ const { name, episode, episodeName, season } = Astro.props;
 
 <article>
   <header>
-    <h2 class="title text-[17px] font-semibold">{name}</h2>
-    <!-- <Button client:visible className="size-11 grid place-items-center -ml-2.5">
-      <span>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="size-4 text-stone-600"
-        >
-          <circle cx="12" cy="12" r="10" />
-          <path d="M12 16v-4" />
-          <path d="M12 8h.01" />
-        </svg>
-      </span>
-    </Button> -->
-    <div class="text-stone-600 font-[460] flex flex-col">
+    <div class="flex items-center relative">
+      <h2 class="title text-[17px] font-semibold">{name}</h2>
+      {Astro.slots.has("note") && (
+        <ProjectNoteDialog client:load title={name}>
+          <slot name="note" />
+        </ProjectNoteDialog>
+      )}
+    </div>
+    <div class="text-stone-600 -mt-2.5 font-[460] flex flex-col">
       <small>
         Inspired by <em>{episodeName}</em>
       </small>
