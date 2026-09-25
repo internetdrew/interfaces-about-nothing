@@ -50,15 +50,28 @@ export function ProjectNoteDialog({ title, children }: Props) {
                 className="relative flex max-h-[calc(100dvh-2rem)] w-full max-w-md flex-col rounded-xl bg-stone-50 p-4 text-neutral-900 shadow-xl ring-[0.5px] ring-stone-400/50 outline-none"
                 render={
                   <motion.div
+                    style={{ transformOrigin: "50% 100%" }}
                     initial={
-                      shouldReduceMotion ? false : { opacity: 0, scale: 0.96 }
+                      shouldReduceMotion
+                        ? false
+                        : {
+                            opacity: 0,
+                            transform:
+                              "translateY(calc(50dvh - 2rem)) perspective(600px) rotateX(-55deg) scale(0.06)",
+                          }
                     }
                     animate={{
                       opacity: 1,
-                      scale: 1,
+                      transform:
+                        "translateY(0px) perspective(600px) rotateX(0deg) scale(1)",
                       transition: {
-                        ...transition,
-                        delay: shouldReduceMotion ? 0 : 0.05,
+                        duration: shouldReduceMotion ? 0 : 0.5,
+                        delay: shouldReduceMotion ? 0 : 0.3,
+                        ease: [0.76, 0, 0.24, 1],
+                        opacity: {
+                          duration: shouldReduceMotion ? 0 : 0.1,
+                          delay: shouldReduceMotion ? 0 : 0.3,
+                        },
                       },
                     }}
                     exit={{
