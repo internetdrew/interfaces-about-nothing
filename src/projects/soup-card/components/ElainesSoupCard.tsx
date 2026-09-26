@@ -153,7 +153,9 @@ const ElainesSoupCard = () => {
 
               <div className="soup-card-stamp">
                 <p className="soup-card-stamp-title">Probationary</p>
-                <p className="soup-card-stamp-note">Bread privileges withheld.</p>
+                <p className="soup-card-stamp-note">
+                  Bread privileges withheld.
+                </p>
               </div>
 
               <div className="mt-auto">
@@ -171,7 +173,7 @@ const ElainesSoupCard = () => {
                   </div>
                 ))}
                 <p className="soup-card-footer soup-mono text-[8px] font-medium sm:text-xs">
-                  Present before ordering or <strong>no soup for you</strong>!
+                  Present before ordering or <strong>NO SOUP FOR YOU</strong>!
                 </p>
               </div>
             </div>
