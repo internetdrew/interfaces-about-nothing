@@ -104,7 +104,7 @@ const TheSoupCard = () => {
                   />
                 </g>
               </svg>
-              <span className="soup-title text-2xl font-bold sm:text-3xl">
+              <span className="soup-title text-2xl font-bold tracking-wide sm:text-3xl">
                 Hot Soup
               </span>
             </div>
