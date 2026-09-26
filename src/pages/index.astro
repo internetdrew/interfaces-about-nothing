@@ -2,7 +2,7 @@
 import { ChineseRestaurantExperience } from "../components/chinese-restraurant/ChineseRestaurantExperience";
 import ProjectWrapper from "../components/ProjectWrapper.astro";
 import Layout from "../layouts/Layout.astro";
-import TheSoupCard from "../projects/soup-card/components/TheSoupCard";
+import ElainesSoupCard from "../projects/soup-card/components/ElainesSoupCard";
 
 // Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
 // Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
@@ -39,7 +39,7 @@ import TheSoupCard from "../projects/soup-card/components/TheSoupCard";
   </ProjectWrapper>
 
   <ProjectWrapper
-    name="The Soup Card"
+    name="Elaine's Soup Card"
     episodeName="The Soup Nazi"
     season={7}
     episode={6}
@@ -64,6 +64,6 @@ import TheSoupCard from "../projects/soup-card/components/TheSoupCard";
       </p>
       <p>I hope you enjoy playing with it.</p>
     </Fragment>
-    <TheSoupCard client:visible />
+    <ElainesSoupCard client:visible />
   </ProjectWrapper>
 </Layout>

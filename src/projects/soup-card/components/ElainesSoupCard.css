@@ -2,12 +2,14 @@
 @import "@fontsource-variable/caveat";
 
 .soup-card-surface {
+  position: relative;
   width: 100%;
   max-width: 626px;
   perspective: 1000px;
 }
 
 .soup-card {
+  position: relative;
   /* The surface owns hit testing, even when a tilted corner projects outside it. */
   pointer-events: none;
   display: grid;
@@ -43,6 +45,40 @@
 
 .soup-card-footer {
   margin-top: clamp(12px, 4cqi, 24px);
+}
+
+.soup-card-stamp {
+  position: absolute;
+  top: 16cqi;
+  left: 40%;
+  z-index: 1;
+  width: min(38cqi, 240px);
+  color: #b83c2d;
+  text-align: center;
+  transform: translateX(-50%) rotate(-6deg);
+}
+
+.soup-card-stamp-title {
+  border: 3px solid currentColor;
+  border-radius: 5px;
+  padding: 2px 5px 4px;
+  font-family: "Oswald Variable", sans-serif;
+  font-size: clamp(17px, 4.8cqi, 30px);
+  font-weight: 650;
+  line-height: 1.15;
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
+  mask-image: url("../images/stamp-wear.svg");
+  mask-size: 100% 100%;
+}
+
+.soup-card-stamp-note {
+  margin-top: 4px;
+  font-family: "Geist Mono Variable", monospace;
+  font-size: clamp(7px, 1.8cqi, 11px);
+  font-weight: 600;
+  line-height: 1.4;
+  white-space: nowrap;
 }
 
 .soup-card-photo-frame {
@@ -166,4 +202,69 @@
 
 .soup-writing {
   font-family: "Caveat Variable", cursive;
+}
+
+.soup-card-tilt,
+.soup-card-rotor {
+  transform-style: preserve-3d;
+  pointer-events: none;
+}
+
+.soup-card-rotor {
+  display: grid;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .soup-card-tilt {
+    /* Independent scale composes with Motion's pointer-tilt transform. */
+    scale: 1;
+    transition: scale 150ms cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+
+  .soup-card-surface:has(> .soup-card-flip-button:active) > .soup-card-tilt {
+    scale: 0.985;
+    transition-duration: 100ms;
+  }
+}
+
+.soup-card-face {
+  grid-area: 1 / 1;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.soup-card-back {
+  transform: rotateY(180deg);
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.soup-card-back-content {
+  justify-content: space-between;
+}
+
+.soup-card-back-rules {
+  list-style: decimal;
+  padding-left: 1.4em;
+  font-size: clamp(12px, 2.5cqi, 16px);
+  line-height: 1.7;
+}
+
+.soup-card-flip-button {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 1rem;
+  background: transparent;
+  cursor: pointer;
+}
+
+.soup-card-flip-button:focus-visible {
+  outline: 2px solid #57534e;
+  outline-offset: 6px;
+}
+
+.soup-stamp {
+  font-family: "Oswald Variable", sans-serif;
 }
