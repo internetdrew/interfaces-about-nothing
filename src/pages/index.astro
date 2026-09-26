@@ -2,6 +2,7 @@
 import { ChineseRestaurantExperience } from "../components/chinese-restraurant/ChineseRestaurantExperience";
 import ProjectWrapper from "../components/ProjectWrapper.astro";
 import Layout from "../layouts/Layout.astro";
+import TheSoupCard from "../projects/soup-card/components/TheSoupCard";
 
 // Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
 // Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
@@ -35,5 +36,34 @@ import Layout from "../layouts/Layout.astro";
       <p>I hope you enjoy playing with it.</p>
     </Fragment>
     <ChineseRestaurantExperience client:visible />
+  </ProjectWrapper>
+
+  <ProjectWrapper
+    name="The Soup Card"
+    episodeName="The Soup Nazi"
+    season={7}
+    episode={6}
+  >
+    <Fragment slot="note">
+      <p>
+        In <em>The Chinese Restaurant</em>, Jerry, Elaine, and George stop for
+        dinner before a movie. They're told the wait will be “five, ten
+        minutes.”
+      </p>
+      <p>
+        What follows is a string of missed signals, parties seated ahead of
+        them, and a mangled name.
+      </p>
+      <p>
+        In the end, their table becomes ready, but not before they leave the
+        restaurant in frustration.
+      </p>
+      <p>
+        This interactive waitlist brings some of that absurdity into an
+        interface inspired by Apple's Dynamic Island.
+      </p>
+      <p>I hope you enjoy playing with it.</p>
+    </Fragment>
+    <TheSoupCard client:visible />
   </ProjectWrapper>
 </Layout>
