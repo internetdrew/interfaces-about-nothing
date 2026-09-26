@@ -1,7 +1,15 @@
 @import "@fontsource-variable/league-gothic";
 @import "@fontsource-variable/caveat";
 
+.soup-card-surface {
+  width: 100%;
+  max-width: 626px;
+  perspective: 1000px;
+}
+
 .soup-card {
+  /* The surface owns hit testing, even when a tilted corner projects outside it. */
+  pointer-events: none;
   display: grid;
   grid-template-columns: minmax(0, 64fr) minmax(0, 36fr);
   container-type: inline-size;
@@ -10,20 +18,31 @@
   width: 100%;
   max-width: 626px;
   min-width: 0;
-  aspect-ratio: 85.6 / 53.98;
   background-color: #f2f2f0;
   background-image: url("../images/paper-texture-626.avif");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 55%),
+    0 1px 2px rgb(45 36 25 / 18%),
+    0 4px 8px -3px rgb(45 36 25 / 16%),
+    0 12px 24px -10px rgb(45 36 25 / 18%);
 }
 
 .soup-card-content {
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   min-width: 0;
-  gap: 24px;
+  /* Preserve card proportions while allowing taller content to fit. */
+  min-height: calc(100cqi * 53.98 / 85.6);
+  gap: clamp(12px, 4cqi, 24px);
   padding: clamp(12px, 3cqi, 20px);
+}
+
+.soup-card-footer {
+  margin-top: clamp(12px, 4cqi, 24px);
 }
 
 .soup-card-photo-frame {
@@ -85,6 +104,59 @@
   /* font-family: "Archivo Black", sans-serif; */
   font-family: "League Gothic Variable", sans-serif;
   text-transform: uppercase;
+}
+
+.soup-card-icon {
+  overflow: visible;
+  flex-shrink: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .soup-steam {
+    /* A shared cycle prevents the wisps drifting back into sync.
+       Uneven pauses and offsets keep the emission rhythm loose. */
+    animation: soup-steam-rise 19.5s linear infinite both;
+  }
+
+  .soup-steam-left {
+    animation-delay: -1s;
+  }
+
+  .soup-steam-center {
+    animation-delay: -4.15s;
+  }
+
+  .soup-steam-right {
+    animation-delay: -7.75s;
+  }
+}
+
+@keyframes soup-steam-rise {
+  0%,
+  47% {
+    opacity: 0;
+    transform: translate(0, 10px);
+  }
+  3.333%,
+  50.333% {
+    opacity: 0.75;
+    transform: translate(-0.2px, 6px);
+  }
+  8%,
+  55.667% {
+    opacity: 0.45;
+    transform: translate(0.2px, 0);
+  }
+  15.333%,
+  62.333%,
+  100% {
+    opacity: 0;
+    transform: translate(0.6px, -4px);
+  }
+  46.99% {
+    opacity: 0;
+    transform: translate(0.6px, -4px);
+  }
 }
 
 .soup-membership,
