@@ -7,7 +7,7 @@ import "./ElainesSoupCard.css";
 const fields = [
   { label: "Name", writing: "Elaine Benes" },
   { label: "Member No.", writing: "EB-0716" },
-  { label: "Member since", writing: "1995" },
+  { label: "Member since", writing: "Nov. '95" },
 ];
 
 // Near-critical damping keeps pointer tracking responsive without a wobbling settle.
