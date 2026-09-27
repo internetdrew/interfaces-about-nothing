@@ -215,19 +215,6 @@
   display: grid;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .soup-card-tilt {
-    /* Independent scale composes with Motion's pointer-tilt transform. */
-    scale: 1;
-    transition: scale 150ms cubic-bezier(0.215, 0.61, 0.355, 1);
-  }
-
-  .soup-card-surface:has(> .soup-card-flip-button:active) > .soup-card-tilt {
-    scale: 0.985;
-    transition-duration: 100ms;
-  }
-}
-
 .soup-card-face {
   grid-area: 1 / 1;
   backface-visibility: hidden;
