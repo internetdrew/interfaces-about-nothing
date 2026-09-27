@@ -1,0 +1,331 @@
+@import "@fontsource-variable/league-gothic";
+@import "@fontsource-variable/caveat";
+
+.soup-card-surface {
+  position: relative;
+  width: 100%;
+  /* max-width: 626px; */
+  perspective: 1000px;
+}
+
+.soup-card {
+  position: relative;
+  /* The surface owns hit testing, even when a tilted corner projects outside it. */
+  pointer-events: none;
+  display: grid;
+  grid-template-columns: minmax(0, 64fr) minmax(0, 36fr);
+  container-type: inline-size;
+  overflow: hidden;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 626px;
+  min-width: 0;
+  background-color: #f2f2f0;
+  background-image: url("../images/paper-texture-626.avif");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 55%),
+    0 1px 2px rgb(45 36 25 / 18%),
+    0 4px 8px -3px rgb(45 36 25 / 16%),
+    0 12px 24px -10px rgb(45 36 25 / 18%);
+}
+
+.soup-card-content {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  /* Preserve card proportions while allowing taller content to fit. */
+  min-height: calc(100cqi * 53.98 / 85.6);
+  gap: clamp(12px, 4cqi, 24px);
+  padding: clamp(12px, 3cqi, 20px);
+}
+
+.soup-card-footer {
+  margin-top: clamp(12px, 4cqi, 24px);
+}
+
+.soup-card-stamp {
+  position: absolute;
+  top: 16cqi;
+  left: 40%;
+  z-index: 1;
+  width: min(38cqi, 240px);
+  color: #b83c2d;
+  text-align: center;
+  transform: translateX(-50%) rotate(-6deg);
+}
+
+.soup-card-stamp-title {
+  border: 3px solid currentColor;
+  border-radius: 5px;
+  padding: 2px 5px 4px;
+  font-family: "Oswald Variable", sans-serif;
+  font-size: clamp(17px, 4.8cqi, 30px);
+  font-weight: 650;
+  line-height: 1.15;
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
+  mask-image: url("../images/stamp-wear.svg");
+  mask-size: 100% 100%;
+}
+
+.soup-card-stamp-note {
+  margin-top: 4px;
+  font-family: "Geist Mono Variable", monospace;
+  font-size: clamp(7px, 1.8cqi, 11px);
+  font-weight: 600;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.soup-card-photo-frame {
+  position: relative;
+  align-self: end;
+  height: 72%;
+  min-height: 0;
+  margin: 0 4cqi 5cqi 1cqi;
+  border: 1px solid #d5d0c5;
+  padding: clamp(4px, 1cqi, 6px);
+  background-color: #f8f5ec;
+  transform: rotate(-3deg);
+  box-shadow:
+    0 1px 2px rgb(45 36 25 / 24%),
+    2px 4px 6px rgb(45 36 25 / 18%);
+}
+
+.soup-card-portrait {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  object-fit: cover;
+  object-position: center;
+}
+
+.soup-card-field > span {
+  flex-shrink: 0;
+}
+
+@container (max-width: 480px) {
+  .soup-card-field {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+  }
+
+  .soup-card-field > span {
+    font-size: 10px;
+  }
+
+  .soup-card-field .soup-writing {
+    font-size: 20px;
+    line-height: 1.1;
+  }
+}
+
+@media (max-width: 400px) {
+  .soup-card {
+    /* Keep the full-resolution texture on high-density mobile displays. */
+    background-image: image-set(
+      url("../images/paper-texture-313.avif") 1x,
+      url("../images/paper-texture-626.avif") 2x
+    );
+  }
+}
+
+.soup-title {
+  /* font-family: "Archivo Black", sans-serif; */
+  font-family: "League Gothic Variable", sans-serif;
+  text-transform: uppercase;
+}
+
+.soup-card-icon {
+  overflow: visible;
+  flex-shrink: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .soup-steam {
+    /* A shared cycle prevents the wisps drifting back into sync.
+       Uneven pauses and offsets keep the emission rhythm loose. */
+    animation: soup-steam-rise 19.5s linear infinite both;
+  }
+
+  .soup-steam-left {
+    animation-delay: -1s;
+  }
+
+  .soup-steam-center {
+    animation-delay: -4.15s;
+  }
+
+  .soup-steam-right {
+    animation-delay: -7.75s;
+  }
+}
+
+@keyframes soup-steam-rise {
+  0%,
+  47% {
+    opacity: 0;
+    transform: translate(0, 10px);
+  }
+  3.333%,
+  50.333% {
+    opacity: 0.75;
+    transform: translate(-0.2px, 6px);
+  }
+  8%,
+  55.667% {
+    opacity: 0.45;
+    transform: translate(0.2px, 0);
+  }
+  15.333%,
+  62.333%,
+  100% {
+    opacity: 0;
+    transform: translate(0.6px, -4px);
+  }
+  46.99% {
+    opacity: 0;
+    transform: translate(0.6px, -4px);
+  }
+}
+
+.soup-membership,
+.soup-mono {
+  font-family: "Geist Mono Variable", monospace;
+}
+
+.soup-writing {
+  font-family: "Caveat Variable", cursive;
+}
+
+.soup-card-tilt,
+.soup-card-rotor {
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  pointer-events: none;
+}
+
+.soup-card-rotor {
+  display: grid;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .soup-card-tilt {
+    /* Independent scale composes with Motion's pointer-tilt transform. */
+    scale: 1;
+    transition: scale 150ms cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+
+  .soup-card-surface:has(> .soup-card-flip-button:active) > .soup-card-tilt {
+    scale: 0.985;
+    transition-duration: 100ms;
+  }
+}
+
+.soup-card-face {
+  grid-area: 1 / 1;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: rotateY(0deg) translateZ(0);
+}
+
+.soup-card-back {
+  transform: rotateY(180deg) translateZ(0);
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.soup-card-back-content {
+  justify-content: space-between;
+}
+
+.soup-record {
+  min-width: 0;
+  padding: clamp(12px, 3cqi, 20px);
+}
+
+.soup-record-warning {
+  margin: 12px 0 0;
+  text-align: right;
+  font-size: clamp(9px, 1.9cqi, 11px);
+}
+
+.soup-record-table {
+  width: 100%;
+  margin-top: 16px;
+  table-layout: fixed;
+  border-collapse: collapse;
+  border: 2px solid #34312b;
+  font-size: clamp(10px, 2.3cqi, 14px);
+}
+
+.soup-record-number {
+  width: 10%;
+}
+
+.soup-record-date {
+  width: 23%;
+}
+
+.soup-record-table th,
+.soup-record-table td {
+  border: 1px solid #34312b;
+  padding: 3px clamp(4px, 1.5cqi, 9px);
+  vertical-align: middle;
+}
+
+.soup-record-table thead th {
+  padding-block: 6px;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.soup-record-table tbody tr {
+  height: clamp(26px, 5.1cqi, 32px);
+}
+
+.soup-record-table td {
+  color: #243452;
+  font-size: clamp(16px, 3.7cqi, 23px);
+  line-height: 1.05;
+  overflow-wrap: break-word;
+}
+
+.soup-record-table td:nth-child(2) {
+  text-align: center;
+  white-space: nowrap;
+}
+
+.soup-card-back-rules {
+  list-style: decimal;
+  padding-left: 1.4em;
+  font-size: clamp(12px, 2.5cqi, 16px);
+  line-height: 1.7;
+}
+
+.soup-card-flip-button {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 1rem;
+  background: transparent;
+  cursor: pointer;
+}
+
+.soup-card-flip-button:focus-visible {
+  outline: 2px solid #57534e;
+  outline-offset: 6px;
+}
+
+.soup-stamp,
+.soup-record-warning {
+  font-family: "Oswald Variable", sans-serif;
+  color: #b83c2d;
+}

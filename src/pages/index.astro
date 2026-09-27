@@ -2,6 +2,7 @@
 import { ChineseRestaurantExperience } from "../components/chinese-restraurant/ChineseRestaurantExperience";
 import ProjectWrapper from "../components/ProjectWrapper.astro";
 import Layout from "../layouts/Layout.astro";
+import ElainesSoupCard from "../projects/soup-card/components/ElainesSoupCard";
 
 // Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
 // Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
@@ -35,5 +36,37 @@ import Layout from "../layouts/Layout.astro";
       <p>I hope you enjoy playing with it.</p>
     </Fragment>
     <ChineseRestaurantExperience client:visible />
+  </ProjectWrapper>
+
+  <ProjectWrapper
+    name="Elaine's Soup Card"
+    episodeName="The Soup Nazi"
+    season={7}
+    episode={6}
+  >
+    <Fragment slot="note">
+      <p>
+        In <em>The Soup Nazi</em>, we meet a local business owner who treats
+        buying his soup as a privilege. His strict rules around ordering earn
+        him an infamous nickname.
+      </p>
+      <p>
+        He serves the best soup in town, but you have to follow a rigid ordering
+        routine. One misstep, and it might be "No soup for you!"
+      </p>
+
+      <p>
+        This interactive membership card imagines what that kind of system might
+        look like if someone actually bothered to formalize it, featuring his
+        greatest nemesis: Elaine.
+      </p>
+
+      <p>
+        It turns the shop's ridiculous rules into a piece of equally ridiculous
+        bureaucracy that shows just how close Elaine is to getting banned.
+      </p>
+      <p>I hope you enjoy playing with it.</p>
+    </Fragment>
+    <ElainesSoupCard client:visible />
   </ProjectWrapper>
 </Layout>
