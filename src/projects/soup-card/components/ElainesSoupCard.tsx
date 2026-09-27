@@ -93,8 +93,6 @@ const ElainesSoupCard = () => {
                     stiffness: 140,
                     damping: 22,
                     mass: 0.8,
-                    // An opposing impulse creates the wind-up within the same spring.
-                    velocity: isFlipped ? -1200 : 1200,
                   }
           }
         >
